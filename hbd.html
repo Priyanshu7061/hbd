@@ -27,6 +27,9 @@
         .message-box {
             animation: popIn 0.8s ease-out;
         }
+        .popIn {
+            animation: popIn 0.8s ease-out;
+        }
         .button-shadow {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             transition: transform 0.2s, box-shadow 0.2s;
@@ -90,9 +93,11 @@
             <img src="sa.jpg" alt="Your Sister's Photo" class="w-full h-full object-cover">
             
             <script>
-                document.querySelector('img').onerror = function() {
-                    this.style.display = 'none';
-                };
+                // scope the onerror handler to this card's image only
+                const cardImg = document.querySelector('.card img');
+                if (cardImg) {
+                    cardImg.onerror = function() { this.style.display = 'none'; };
+                }
             </script>
         </div>
 
@@ -100,19 +105,19 @@
             <p id="birthday-message" class="text-gray-700 text-lg md:text-xl message-box">
                 Click the button below to reveal your special birthday message!
             </p>
-             <audio class="song" loop autoplay>
-        <source src="Aashiyan Barfi 128 Kbps-[AudioTrimmer.com].mp3">
-        </source>
-        Your browser isn't invited for super fun audio time.
-    </audio>
+            <!-- muted added to avoid autoplay being blocked during local testing; add type on source and remove invalid closing tag -->
+            <audio class="song" loop autoplay muted>
+                <source src="Aashiyan Barfi 128 Kbps-[AudioTrimmer.com].mp3" type="audio/mpeg">
+                Your browser doesn't support the audio element.
+            </audio>
         </div>
 
         <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4 mt-8">
             <button id="reveal-btn" class="bg-fuchsia-500 hover:bg-fuchsia-600 text-white font-bold py-3 px-6 rounded-full button-shadow transition-all duration-300 transform-gpu">
                 Reveal Message
             </button>
-            <button id="copy-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-6 rounded-full button-shadow transition-all duration-300 transform-gpu hidden">
-                from .. Umar Siddiqui 
+            <button id="copy-btn" aria-label="Copy message" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-6 rounded-full button-shadow transition-all duration-300 transform-gpu hidden">
+                Copy to Clipboard
             </button>
         </div>
     </div>
